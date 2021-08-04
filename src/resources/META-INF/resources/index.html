@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Here lies info
+<script type="text/javascript">
+    const request = new XMLHttpRequest();
+    const url='/rates';
+    request.open("GET", url);
+    request.send();
+
+    request.onreadystatechange = (e) => {
+        console.log(request.responseText)
+    }
+</script>
+</body>
+</html>
