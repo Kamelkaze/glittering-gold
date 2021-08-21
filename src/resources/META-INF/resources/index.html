@@ -5,16 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-Here lies info
-<script type="text/javascript">
-    const request = new XMLHttpRequest();
-    const url='/rates';
-    request.open("GET", url);
-    request.send();
+    <div id="background">
+        <div>
+            Source currency: <select name="source" id="source"></select>
+        </div>
+        <div>
+            Target currency: <select name="target" id="target"></select>
+        </div>
+        <div>
+            Amount: <input id="amount" onkeyup="validateAmount()" type="number" />
+        </div>
+        <button id="convert" onclick="convertCurrency()">Convert</button>
+        <div id="output"></div>
+    </div>
 
-    request.onreadystatechange = (e) => {
-        console.log(request.responseText)
-    }
-</script>
+<script src="exchangeRate.js"></script>
 </body>
 </html>
