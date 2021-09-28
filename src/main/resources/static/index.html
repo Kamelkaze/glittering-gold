@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Currency converter</title>
+    <style>
+        div {
+            padding: 10px;
+        }
+        button {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
     <div id="background">
@@ -15,6 +23,7 @@
         <div>
             Amount: <input id="amount" onkeyup="validateAmount()" type="number" />
         </div>
+
         <button id="convert" onclick="convertCurrency()">Convert</button>
         <div id="output"></div>
     </div>

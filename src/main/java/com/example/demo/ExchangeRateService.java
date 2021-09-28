@@ -1,45 +1,54 @@
 package com.example.demo;
 
 import org.apache.http.client.HttpResponseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 
-import java.time.Instant;
+import java.time.Clock;
 
 @Service
 public class ExchangeRateService {
 
-    final private static int CACHE_INVALIDATION_TIME_SECONDS = 60 * 60;
+    final public static int CACHE_INVALIDATION_TIME_SECONDS = 60 * 60;
 
     final private static String EXCHANGE_RATES_API_URL = "http://api.exchangeratesapi.io/v1/latest?access_key=8e8dac7fabb2d29d97e023c47b05b88b";
 
-    private ExchangeRateResponse cachedExchangeResponse = null;
-
-    public long getCacheInvalidationTimeInSeconds() {
-        return CACHE_INVALIDATION_TIME_SECONDS;
+    @Autowired
+    public ExchangeRateService(ExchangeRateResponse exchangeRateResponse, Clock clock, WebClient webClient) {
+        this.cachedExchangeResponse = exchangeRateResponse;
+        this.clock = clock;
+        this.webClient = webClient;
     }
 
-    public long getTimeStamp() {
-        return Instant.now().getEpochSecond();
+    private WebClient webClient;
+
+    private ExchangeRateResponse cachedExchangeResponse;
+
+    private Clock clock;
+
+    public long getTimeInSeconds() {
+        return clock.instant().getEpochSecond();
     }
 
-    public boolean isCacheOutdated() {
-        return getTimeStamp() - cachedExchangeResponse.getTimestamp() >= getCacheInvalidationTimeInSeconds();
+    public boolean isCacheValid() {
+        return getTimeInSeconds() - cachedExchangeResponse.getTimestamp() < CACHE_INVALIDATION_TIME_SECONDS;
     }
 
     public ExchangeRateResponse getValidExchangeRates() throws HttpResponseException {
-        if (cachedExchangeResponse == null || isCacheOutdated()) {
+        if (cachedExchangeResponse == null || !isCacheValid()) {
             try {
                 cachedExchangeResponse = makeRequestWithType(EXCHANGE_RATES_API_URL, ExchangeRateResponse.class);
-            } catch (Exception e) {
+            } catch (WebClientException e) {
                 throw new HttpResponseException(503, "Exchange rate service unavailable!");
             }
         }
         return cachedExchangeResponse;
     }
 
-    public <T> T makeRequestWithType(String url, Class<T> responseType) {
-        T response = WebClient.create()
+    public <T> T makeRequestWithType(String url, Class<T> responseType) throws WebClientException {
+        T response = webClient
                 .get()
                 .uri(url)
                 .retrieve()
