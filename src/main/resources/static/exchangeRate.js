@@ -58,7 +58,7 @@ function getValueFromSelect(id) {
     return select.options[select.selectedIndex].value;
 }
 
-async function validateAmount() {
+function validateAmount() {
     let amount = document.getElementById("amount").value;
     document.getElementById('convert').disabled = (amount === "");
 }

@@ -13,7 +13,8 @@ public class ExchangeRateService {
 
     final public static int CACHE_INVALIDATION_TIME_SECONDS = 60 * 60;
 
-    final private static String EXCHANGE_RATES_API_URL = "http://api.exchangeratesapi.io/v1/latest?access_key=8e8dac7fabb2d29d97e023c47b05b88b";
+    final private static String EXCHANGE_RATES_API_KEY = "8e8dac7fabb2d29d97e023c47b05b88b";
+    final private static String EXCHANGE_RATES_API_URL = "http://api.exchangeratesapi.io/v1/latest?access_key=" + EXCHANGE_RATES_API_KEY;
 
     @Autowired
     public ExchangeRateService(ExchangeRateResponse exchangeRateResponse, Clock clock, WebClient webClient) {

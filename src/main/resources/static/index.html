@@ -21,7 +21,7 @@
             Target currency: <select name="target" id="target"></select>
         </div>
         <div>
-            Amount: <input id="amount" onkeyup="validateAmount()" type="number" />
+            Amount: <input id="amount" onkeyup="validateAmount()" onchange="validateAmount()" type="number" />
         </div>
 
         <button id="convert" onclick="convertCurrency()">Convert</button>
