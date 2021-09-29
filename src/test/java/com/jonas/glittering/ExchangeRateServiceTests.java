@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.jonas.glittering;
 
 import org.apache.http.client.HttpResponseException;
 import org.junit.jupiter.api.Test;

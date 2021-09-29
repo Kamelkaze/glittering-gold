@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.jonas.glittering;
 
 import java.util.Date;
 import java.util.Map;
